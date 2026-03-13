@@ -11,6 +11,7 @@ import { Place, SearchResult } from '@/types';
 import ImportSearchList from './import-search-list';
 import { mockResults } from '@/mock/data/search-result';
 import { PendingPlaceCard } from './pending-place-card';
+import { searchPlaceNearbyToImport } from '@/actions/search-import-action';
 
 
 
@@ -21,20 +22,26 @@ export default function AdminImportPage() {
   const { addPlace, getPendingPlaces } = usePlaces();
   const pendingPlaces = getPendingPlaces();
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     
     setSearching(true);
     
+    const searchedData: SearchResult[] = await searchPlaceNearbyToImport(searchQuery);
+    console.log("Search results:", searchedData);
+    setSearchResults(searchedData);
+    setSearching(false);
     // Mock search results
-    setTimeout(() => {
+    // setTimeout(() => {
       
-      setSearchResults(mockResults);
-      setSearching(false);
-    }, 1000);
+    //   setSearchResults(mockResults);
+    //   setSearching(false);
+    // }, 1000);
   };
 
   const toggleSelection = (id: string) => {
+    console.log("Toggling selection for ID:", id);
+    console.log("Current search results before toggle:", searchResults);
     setSearchResults(prev =>
       prev.map(result =>
         result.id === id ? { ...result, selected: !result.selected } : result

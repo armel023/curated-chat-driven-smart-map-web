@@ -4,7 +4,7 @@ import { SearchResult } from "@/types";
 import { Check, MapPin } from "lucide-react";
 
 
-export default function SearchedPlaceCard({ result, toggleSelection }: { result: SearchResult, toggleSelection: (id: string) => void }) {
+export default function SearchedPlaceCard({  result, toggleSelection }: { result: SearchResult, toggleSelection: (id: string) => void }) {
   return (
     <Card
         key={result.id}
@@ -13,7 +13,7 @@ export default function SearchedPlaceCard({ result, toggleSelection }: { result:
         }`}
         onClick={() => toggleSelection(result.id)}
         >
-        <CardContent className="pt-6">
+        <CardContent key={result.id} className="pt-6">
             <div className="flex items-start gap-3">
             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                 result.selected ? 'bg-primary border-primary' : 'border-border'
