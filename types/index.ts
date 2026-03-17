@@ -35,3 +35,11 @@ export type SearchResult = {
   rating?: number;
   selected: boolean;
 }
+
+export type UpdatePlaceData = {
+  name?: string;
+  address?: string;
+  googlePlaceId?: string;
+  rating?: number;
+  status?: PlaceStatus;
+}

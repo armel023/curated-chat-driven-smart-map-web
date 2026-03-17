@@ -79,7 +79,7 @@ export default function AdminPlacesPage() {
                     <Badge>{place.category}</Badge>
                     {place.subCategory && <Badge variant="outline">{place.subCategory}</Badge>}
                     <Badge variant="secondary">{place.neighborhood}</Badge>
-                    {place.tags.map((tag) => (
+                    {place.tags && place.tags.map((tag) => (
                       <Badge key={tag} variant="outline">{tag}</Badge>
                     ))}
                   </div>
@@ -226,8 +226,8 @@ const EditPlaceForm: React.FC<EditPlaceFormProps> = ({ place }) => {
 
       <div className="space-y-2">
         <Label>Tags</Label>
-        <div className="flex flex-wrap gap-2">
-          {COMMON_TAGS.map((tag) => (
+        {/* <div className="flex flex-wrap gap-2">
+          {COMMON_TAGS && COMMON_TAGS.map((tag) => (
             <Badge
               key={tag}
               variant={formData.tags.includes(tag) ? 'default' : 'outline'}
@@ -237,7 +237,7 @@ const EditPlaceForm: React.FC<EditPlaceFormProps> = ({ place }) => {
               {tag}
             </Badge>
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div className="space-y-2">

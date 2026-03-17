@@ -1,5 +1,6 @@
 "use client";
 import { getPlaceList } from '@/actions/places-action';
+import { useFetchPlaces } from '@/hooks/callbacks/useFetchPlaces';
 // import { mockPlaces } from '@/mock/data/places';
 import { Place } from '@/types';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
@@ -15,6 +16,7 @@ interface PlacesContextType {
   getApprovedPlaces: () => Place[];
   getPendingPlaces: () => Place[];
   setPlaces: (places: Place[]) => void;
+  reloadPlaces: () => Promise<void>;
 }
 
 const PlacesContext = createContext<PlacesContextType | undefined>(undefined);
@@ -29,6 +31,16 @@ export const usePlaces = () => {
 
 export const PlacesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [places, setPlaces] = useState<Place[]>([]);
+  const refetchPlaces = useFetchPlaces();
+
+  const reloadPlaces = async () => {
+    try {
+      const data = await refetchPlaces('');
+      setPlaces(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -90,7 +102,8 @@ export const PlacesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     getPublicPlaces,
     getApprovedPlaces,
     getPendingPlaces,
-    setPlaces
+    setPlaces,
+    reloadPlaces
   };
 
   return <PlacesContext.Provider value={value}>{children}</PlacesContext.Provider>;
