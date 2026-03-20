@@ -36,7 +36,7 @@ export const PendingPlaceCard: React.FC<PendingPlaceCardProps> = ({ place }) => 
           </div>
           
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{place.category}</Badge>
+            {place.primaryCategory && <Badge variant="secondary">{place.primaryCategory}</Badge>}
             {place.rating && (
               <Badge variant="outline">★ {place.rating}</Badge>
             )}

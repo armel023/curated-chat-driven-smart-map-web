@@ -14,7 +14,7 @@ export default function PlaceCard( { place, selectedPlaceId, onEdit }: { place: 
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <h3>{place.name}</h3>
-              {place.visibleToPublic ? (
+              {place.isPublic ? (
                 <Eye className="w-4 h-4 text-primary" />
               ) : (
                 <EyeOff className="w-4 h-4 text-muted-foreground" />
@@ -22,9 +22,11 @@ export default function PlaceCard( { place, selectedPlaceId, onEdit }: { place: 
             </div>
             <p className="text-sm text-muted-foreground">{place.address}</p>
             <div className="flex flex-wrap gap-2">
-              <Badge>{place.category}</Badge>
-              {place.subCategory && <Badge variant="outline">{place.subCategory}</Badge>}
-              <Badge variant="secondary">{place.neighborhood}</Badge>
+              {place.primaryCategory && <Badge>{place.primaryCategory}</Badge>}
+              {place.subCategories && place.subCategories.map((subCategory) => (
+                <Badge key={subCategory} variant="outline">{subCategory}</Badge>
+              ))}
+              {place.neighborhood && <Badge variant="secondary">{place.neighborhood}</Badge>}
               {place.tags && place.tags.map((tag) => (
                 <Badge key={tag} variant="outline">{tag}</Badge>
               ))}

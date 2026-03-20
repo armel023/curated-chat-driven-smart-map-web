@@ -1,4 +1,5 @@
 "use client"
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,18 +16,59 @@ interface EditPlaceFormProps {
   place: Place;
 }
 
-const CATEGORIES = ['Coffee', 'Restaurant', 'Bar', 'Museum', 'Park', 'Shopping', 'Entertainment'];
-const SUB_CATEGORIES = {
-  Coffee: ['Specialty Coffee', 'Café', 'Bakery'],
-  Restaurant: ['Fine Dining', 'Casual Dining', 'Street Food', 'Danish Cuisine'],
-  Bar: ['Cocktail Bar', 'Wine Bar', 'Beer Garden'],
-  Museum: ['Art Museum', 'History Museum', 'Science Museum'],
-  Park: ['City Park', 'Botanical Garden', 'Beach'],
-  Shopping: ['Boutique', 'Market', 'Shopping Mall'],
-  Entertainment: ['Theater', 'Cinema', 'Live Music'],
-};
-const NEIGHBORHOODS = ['Indre By', 'Nørrebro', 'Vesterbro', 'Østerbro', 'Christianshavn', 'Refshaleøen', 'Islands Brygge'];
-const COMMON_TAGS = ['Outdoor Seating', 'Canal View', 'Family Friendly', 'Pet Friendly', 'Historic', 'Modern', 'Minimalist', 'Casual', 'Organic'];
+const CATEGORIES = ['EAT', 'DRINK','DO' ,'SHOP', 'NEED'];
+const SUB_CATEGORIES = [
+// EAT
+    "Restaurant",
+    "Cafe",
+    "Street Food",
+    "Quick Bites",
+    "Bakery",
+    "Ice Cream",
+
+    // DRINK
+    "Coffee",
+    "Tea",
+    "Wine",
+    "Cocktails & Drinks",
+    "Beer",
+    "Rooftop",
+
+    // DO
+    "Sights",
+    "Museum & Gallery",
+    "Nature & Parks",
+    "Swim & Beach",
+    "Viewpoint",
+    "Entertainment",
+    "Event Venue",
+
+    // SHOP
+    "Fashion",
+    "Lifestyle",
+    "Bookstore",
+    "Design",
+    "Vintage",
+    "Market",
+    "Food Souvenirs",
+
+    // NEED
+    "Toilets",
+    "Pharmacy",
+    "ATM",
+    "Playground",
+    "WiFi",
+    "Workspace",
+    "Transport"
+];
+const NEIGHBORHOODS = ['Indre By', 'Nørrebro', 'Vesterbro', 'Østerbro', 'Christianshavn', 'Refshaleøen', 'Islands Brygge', 'Embarcadero'];
+const COMMON_TAGS = [
+  "Canal View",
+  "Lake View",
+  "Nyhavn View",
+  "Seaside View",
+  "Mountain View",
+  "City View",];
 
 export default function EditPlaceForm({ place }: EditPlaceFormProps) {
   const { updatePlace } = usePlaces();
@@ -41,17 +83,25 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
   const toggleTag = (tag: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.includes(tag)
+      tags: prev.tags?.includes(tag)
         ? prev.tags.filter(t => t !== tag)
-        : [...prev.tags, tag]
+        : [...(prev.tags || []), tag]
     }));
   };
 
+  const toggleSubCategory = (subCategory: string) => {
+    setFormData(prev => ({
+      ...prev,
+      subCategories: prev.subCategories?.includes(subCategory)
+        ? prev.subCategories.filter(sc => sc !== subCategory)
+        : [...(prev.subCategories || []), subCategory]
+    }));
+  };
   const generateAISummary = () => {
     const summaries = [
-      `Highly-rated ${formData.category.toLowerCase()} spot in ${formData.neighborhood} known for its exceptional quality and atmosphere.`,
-      `Popular ${formData.category.toLowerCase()} destination featuring ${formData.tags[0]?.toLowerCase() || 'great ambiance'} and authentic experience.`,
-      `Local favorite ${formData.category.toLowerCase()} in ${formData.neighborhood} offering memorable visits and quality service.`,
+      `Highly-rated ${formData.primaryCategory?.toLowerCase()} spot in ${formData.neighborhood} known for its exceptional quality and atmosphere.`,
+      `Popular ${formData.primaryCategory?.toLowerCase()} destination featuring ${formData.tags?.map(tag => tag.toLowerCase()).join(', ') || 'great ambiance'} and authentic experience.`,
+      `Local favorite ${formData.primaryCategory?.toLowerCase()} in ${formData.neighborhood} offering memorable visits and quality service.`,
     ];
     const randomSummary = summaries[Math.floor(Math.random() * summaries.length)];
     setFormData(prev => ({ ...prev, aiSummary: randomSummary }));
@@ -84,8 +134,8 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
         <div className="space-y-2">
           <Label htmlFor="category">Primary Category</Label>
           <Select
-            value={formData.category}
-            onValueChange={(value) => setFormData({ ...formData, category: value, subCategory: undefined })}
+            value={formData.primaryCategory || ''}
+            onValueChange={(value) => setFormData({ ...formData, primaryCategory: value })}
           >
             <SelectTrigger>
               <SelectValue />
@@ -97,19 +147,19 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
             </SelectContent>
           </Select>
         </div>
-
+        
         <div className="space-y-2">
-          <Label htmlFor="subCategory">Sub Category</Label>
+          <Label htmlFor="neighborhood">Neighborhood</Label>
           <Select
-            value={formData.subCategory || ''}
-            onValueChange={(value) => setFormData({ ...formData, subCategory: value })}
+            value={formData.neighborhood}
+            onValueChange={(value) => setFormData({ ...formData, neighborhood: value })}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select sub category" />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {SUB_CATEGORIES[formData.category as keyof typeof SUB_CATEGORIES]?.map((subCat) => (
-                <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
+              {NEIGHBORHOODS.map((hood) => (
+                <SelectItem key={hood} value={hood}>{hood}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -117,47 +167,60 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="neighborhood">Neighborhood</Label>
-        <Select
-          value={formData.neighborhood}
-          onValueChange={(value) => setFormData({ ...formData, neighborhood: value })}
+        <Label htmlFor="subCategory">Sub Category</Label>
+        <div className="flex flex-wrap gap-2">
+          {SUB_CATEGORIES && SUB_CATEGORIES.map((subCat) => (
+            <Badge
+              key={subCat}
+              variant={formData.subCategories?.includes(subCat) ? 'default' : 'outline'}
+              className="cursor-pointer"
+              onClick={() => toggleSubCategory(subCat)}
+            >
+              {subCat}
+            </Badge>
+          ))}
+        </div>
+        {/* <Select
+          value={ ''}
+          onValueChange={(value) => setFormData({ ...formData, subCategories: formData.subCategories ? [...formData.subCategories, value] : [value] })}
         >
           <SelectTrigger>
-            <SelectValue />
+            <SelectValue placeholder="Select sub category" />
           </SelectTrigger>
           <SelectContent>
-            {NEIGHBORHOODS.map((hood) => (
-              <SelectItem key={hood} value={hood}>{hood}</SelectItem>
+            {SUB_CATEGORIES?.map((subCat) => (
+              <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
             ))}
           </SelectContent>
-        </Select>
+        </Select> */}
       </div>
+
 
       <div className="space-y-2">
         <Label>Tags</Label>
-        {/* <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {COMMON_TAGS && COMMON_TAGS.map((tag) => (
             <Badge
               key={tag}
-              variant={formData.tags.includes(tag) ? 'default' : 'outline'}
+              variant={formData.tags?.includes(tag) ? 'default' : 'outline'}
               className="cursor-pointer"
               onClick={() => toggleTag(tag)}
             >
               {tag}
             </Badge>
           ))}
-        </div> */}
+        </div>
       </div>
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          value={formData.aiSummary}
+          onChange={(e) => setFormData({ ...formData, aiSummary: e.target.value })}
           rows={3}
         />
-      </div>
+      </div> */}
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
@@ -182,8 +245,8 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
         </div>
         <Switch
           id="visibleToPublic"
-          checked={formData.visibleToPublic}
-          onCheckedChange={(checked) => setFormData({ ...formData, visibleToPublic: checked })}
+          checked={formData.isPublic}
+          onCheckedChange={(checked) => setFormData({ ...formData, isPublic: checked })}
         />
       </div>
 

@@ -85,7 +85,7 @@ export const PlacesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   const getPublicPlaces = () => {
-    return places.filter((place) => place.status === 'APPROVED' && place.visibleToPublic);
+    return places.filter((place) => place.status === 'APPROVED' && place.isPublic);
   };
 
   const getApprovedPlaces = () => {

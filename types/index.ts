@@ -8,21 +8,34 @@ export type Place = {
   id: string;
   name: string;
   address: string;
-  lat: number;
-  lng: number;
-  category: string;
-  subCategory?: string;
-  tags: string[];
-  neighborhood: string;
-  description: string;
-  aiSummary: string;
-  status: PlaceStatus;
-  visibleToPublic: boolean;
-  openingHours: OpeningHours;
-  hasView?: string[];
+  googlePlaceId?: string; // for Google Maps link
+  latitude: number;
+  longitude: number;
   rating?: number;
+  status: PlaceStatus;
+  isPublic: boolean;
+
+  // Optional metadata for better categorization and searchability
+  primaryCategory?: string;
+  subCategories?: string[];
+  neighborhood?: string;
+  tags?: string[];
+
+  // Optional fields for richer descriptions
+  signatureDish?: string;
+  signatureDrink?: string;
+  famousFor?: string;
+  tone?: string;
+  idealUseCase?: string;
+  topReasons?: string;
+  aiSummary: string;
+  adminSummaryOverride?: string;
+  isOverride: boolean;
+  
+  openingHours?: OpeningHours;
+  hasView?: string[];
   reviewCount?: number;
-  placeId?: string; // for Google Maps link
+  
 }
 
 export type SearchResult = {
