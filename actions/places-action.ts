@@ -1,8 +1,7 @@
 "use server";
 
-import { Place } from "@/types";
+import { Place, PlaceStatus } from "@/types";
 
-export type PlaceStatus = 'pending' | 'approved' | 'rejected';
 
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:5292";
 

@@ -13,13 +13,13 @@ interface PendingPlaceCardProps {
 export const PendingPlaceCard: React.FC<PendingPlaceCardProps> = ({ place }) => {
   const { approvePlace, rejectPlace } = usePlaces();
 
-  const handleApprove = () => {
-    approvePlace(place.id);
+  const handleApprove = async () => {
+    await approvePlace(place.id);
     toast.success(`${place.name} approved`);
   };
 
-  const handleReject = () => {
-    rejectPlace(place.id);
+  const handleReject = async () => {
+    await rejectPlace(place.id);
     toast.error(`${place.name} rejected`);
   };
 

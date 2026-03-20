@@ -1,6 +1,7 @@
 "use client";
 import { getPlaceList } from '@/actions/places-action';
 import { useFetchPlaces } from '@/hooks/callbacks/useFetchPlaces';
+import useUpdatePlaceStatus from '@/hooks/callbacks/useUpdatePlaces';
 // import { mockPlaces } from '@/mock/data/places';
 import { Place } from '@/types';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
@@ -32,6 +33,7 @@ export const usePlaces = () => {
 export const PlacesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const refetchPlaces = useFetchPlaces();
+  const updatePlaceStatus = useUpdatePlaceStatus();
 
   const reloadPlaces = async () => {
     try {
@@ -72,12 +74,14 @@ export const PlacesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setPlaces((prev) => prev.filter((place) => place.id !== id));
   };
 
-  const approvePlace = (id: string) => {
-    updatePlace(id, { status: 'APPROVED' });
+  const approvePlace = async (id: string) => {
+    await updatePlaceStatus(id, 'APPROVED');
+    reloadPlaces();
   };
 
-  const rejectPlace = (id: string) => {
-    updatePlace(id, { status: 'REJECTED' });
+  const rejectPlace = async (id: string) => {
+    await updatePlaceStatus(id, 'REJECTED');
+    reloadPlaces();
   };
 
   const getPublicPlaces = () => {
