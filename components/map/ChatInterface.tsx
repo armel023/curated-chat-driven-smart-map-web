@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Send, Bot, User } from 'lucide-react';
-import { Place } from '../../contexts/PlacesContext';
-import { PlaceCard } from './PlaceCard';
+"use client";
+import React, { useState, useRef, useEffect } from "react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Send, Bot, User } from "lucide-react";
+import { PlaceCard } from "./PlaceCard";
+import { Place } from "@/types";
 
 export interface ChatMessage {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   places?: Place[];
   timestamp: Date;
@@ -26,13 +27,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: '1',
-      role: 'assistant',
-      content: 'Hello! I\'m your city guide assistant. Ask me to find the best cafés, restaurants, or hidden gems. Try: "Show me the five best coffee places" or "Find a café with canal view near Nyhavn"',
+      id: "1",
+      role: "assistant",
+      content:
+        'Hello! I\'m your city guide assistant. Ask me to find the best cafés, restaurants, or hidden gems. Try: "Show me the five best coffee places" or "Find a café with canal view near Nyhavn"',
       timestamp: new Date(),
     },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const placeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -48,8 +50,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Scroll to selected place card
     if (selectedPlace && placeRefs.current[selectedPlace.id]) {
       placeRefs.current[selectedPlace.id]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
+        behavior: "smooth",
+        block: "nearest",
       });
     }
   }, [selectedPlace]);
@@ -60,13 +62,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      role: 'user',
+      role: "user",
       content: input,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput('');
+    setInput("");
     setIsTyping(true);
 
     // Simulate processing delay
@@ -75,7 +77,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: "assistant",
         content: response,
         places: places.length > 0 ? places : undefined,
         timestamp: new Date(),
@@ -103,23 +105,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
             >
-              {message.role === 'assistant' && (
+              {message.role === "assistant" && (
                 <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                   <Bot className="w-4 h-4 text-primary-foreground" />
                 </div>
               )}
-              
-              <div className={`flex-1 max-w-[80%] ${message.role === 'user' ? 'flex justify-end' : ''}`}>
+
+              <div
+                className={`flex-1 max-w-[80%] ${message.role === "user" ? "flex justify-end" : ""}`}
+              >
                 <div
                   className={`rounded-lg p-3 ${
-                    message.role === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary'
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary"
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-sm whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                 </div>
 
                 {message.places && message.places.length > 0 && (
@@ -140,7 +146,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 )}
               </div>
 
-              {message.role === 'user' && (
+              {message.role === "user" && (
                 <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
                   <User className="w-4 h-4 text-accent-foreground" />
                 </div>
@@ -155,9 +161,18 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               </div>
               <div className="bg-secondary rounded-lg p-3">
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div
+                    className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
                 </div>
               </div>
             </div>
@@ -178,19 +193,21 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <Send className="w-4 h-4" />
           </Button>
         </form>
-        
+
         <div className="mt-2 flex flex-wrap gap-2">
-          {['Best coffee shops', 'Canal view restaurants', 'Open now'].map((suggestion) => (
-            <Button
-              key={suggestion}
-              variant="outline"
-              size="sm"
-              onClick={() => setInput(suggestion)}
-              className="text-xs"
-            >
-              {suggestion}
-            </Button>
-          ))}
+          {["Best coffee shops", "Canal view restaurants", "Open now"].map(
+            (suggestion) => (
+              <Button
+                key={suggestion}
+                variant="outline"
+                size="sm"
+                onClick={() => setInput(suggestion)}
+                className="text-xs"
+              >
+                {suggestion}
+              </Button>
+            ),
+          )}
         </div>
       </div>
     </div>
