@@ -17,9 +17,7 @@ import { useEffect } from "react";
 import { Place } from "@/types";
 
 interface MapProps {
-  posix: LatLngExpression | LatLngTuple;
   zoom?: number;
-  poiInfo?: string;
   places: Place[];
 }
 
@@ -29,21 +27,35 @@ const defaults = {
 };
 
 export default function Map({
-  posix,
   zoom = defaults.zoom,
-  poiInfo,
   places = [],
 }: MapProps) {
-  console.log("Rendering Map with posix:", posix, "and zoom:", zoom);
-  function ChangeView({ center }: { center: LatLngTuple }) {
-    const map = useMap();
 
-    useEffect(() => {
-      map.setView(center, map.getZoom());
-    }, [center, map]);
+  function FitBounds({ places }: { places: Place[] }) {
+  const map = useMap();
 
-    return null;
+  useEffect(() => {
+    if (!places || places.length === 0) return;
+
+    const bounds = places.map((place) => [
+      place.latitude,
+      place.longitude,
+    ]) as LatLngTuple[];
+
+  if (places.length === 1) {
+    map.setView(
+        [places[0].latitude, places[0].longitude],
+        15
+      );
+  } else {
+    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 17, });
   }
+    
+  }, [places, map]);
+
+  return null;
+}
+
 
   return (
     <MapContainer
@@ -71,7 +83,8 @@ export default function Map({
           </Tooltip>
         </Marker>
       ))}
-      <ChangeView center={posix as LatLngTuple} />
+      {/* <ChangeView center={posix as LatLngTuple} /> */}
+      <FitBounds places={places} />
     </MapContainer>
   );
 }

@@ -55,7 +55,15 @@ export type UpdatePlaceData = {
   rating?: number;
   status?: PlaceStatus;
 };
+
 export type SearchPlaceTextQueryResult = {
   places: SearchResult[];
   nextPageToken?: string;
 };
+
+
+export type UserData = {
+  id: string;
+  name: string;
+  accessToken: string;
+}

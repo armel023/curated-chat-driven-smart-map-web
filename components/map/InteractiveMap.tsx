@@ -82,14 +82,6 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-lg overflow-hidden relative"
     >
       <MapComponent
-        posix={
-          places.length > 0 ? [places[0].latitude, places[0].longitude] : [0, 0]
-        }
-        poiInfo={
-          places.length > 0
-            ? `${places[0].name} - ${places[0].primaryCategory || "Unknown"}`
-            : "No location data"
-        }
         places={places}
       />
       {/* Legend */}

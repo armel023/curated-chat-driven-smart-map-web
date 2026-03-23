@@ -1,5 +1,5 @@
 "use client";
-import { LogoWithText } from "@/components/Logo";
+import loginAction from "@/actions/login-action";
 import LogoImg from "@/components/LogoImg";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/contexts/AuthContext";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useState } from "react";
@@ -22,14 +20,14 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const success = await login(email, password);
+      const success = await loginAction(email, password);
       if (success) {
         toast.success("Login successful!");
         // Navigate based on role
@@ -106,7 +104,7 @@ export default function LoginPage() {
           <div className="mt-6 p-4 bg-secondary rounded-lg text-sm">
             <p className="font-medium mb-2">Demo Credentials:</p>
             <p className="text-muted-foreground">
-              Admin: admin@example.com / admin
+              Admin: username: admin / password: Admin@123
             </p>
             <p className="text-muted-foreground">
               User: any email / any password

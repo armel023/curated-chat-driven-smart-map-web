@@ -1,5 +1,5 @@
 "use client";
-import { LogoWithText } from "@/components/Logo";
+import { logOutAction } from "@/actions/login-action";
 import LogoImg from "@/components/LogoImg";
 import { ChatInterface } from "@/components/map/ChatInterface";
 import { InteractiveMap } from "@/components/map/InteractiveMap";
@@ -21,7 +21,10 @@ import React, { useState, useMemo, useEffect } from "react";
 // import { processChatQuery, filterPlacesByQuery, generateResponse } from '../utils/chatProcessor';
 
 export default function MapPage() {
-  const { user, isGuest, isAdmin, logout } = useAuth();
+  // const { user, isGuest, isAdmin, logout } = useAuth();
+  const isGuest = false; // Placeholder until auth is implemented
+  const isAdmin = true; // Placeholder until auth is implemented
+
   const { getPublicPlaces, getApprovedPlaces } = usePlaces();
   //   const navigate = useNavigate();
 
@@ -61,10 +64,8 @@ export default function MapPage() {
     };
   };
 
-  const handleLogout = () => {
-    logout();
-    // navigate("/login");
-    redirect("/login");
+  const handleLogout = async () => {
+    await logOutAction();
   };
 
   return (
@@ -89,7 +90,7 @@ export default function MapPage() {
               <>
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm hidden sm:inline">{user?.name}</span>
+                  {/* <span className="text-sm hidden sm:inline">{user?.name}</span> */}
                 </div>
                 {isAdmin && (
                   <Button

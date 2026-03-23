@@ -1,4 +1,4 @@
-"use client";
+
 import ImportSearchView from './import-search-view';
 import PendingPlaceList from './pending-place-list';
 
