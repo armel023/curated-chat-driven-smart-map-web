@@ -1,8 +1,8 @@
-export type PlaceStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type PlaceStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export type OpeningHours = {
   [key: string]: { open: string; close: string } | null;
-}
+};
 
 export type Place = {
   id: string;
@@ -31,12 +31,11 @@ export type Place = {
   aiSummary: string;
   adminSummaryOverride?: string;
   isOverride: boolean;
-  
+
   openingHours?: OpeningHours;
   hasView?: string[];
   reviewCount?: number;
-  
-}
+};
 
 export type SearchResult = {
   id: string;
@@ -47,7 +46,7 @@ export type SearchResult = {
   category: string;
   rating?: number;
   selected: boolean;
-}
+};
 
 export type UpdatePlaceData = {
   name?: string;
@@ -55,4 +54,8 @@ export type UpdatePlaceData = {
   googlePlaceId?: string;
   rating?: number;
   status?: PlaceStatus;
-}
+};
+export type SearchPlaceTextQueryResult = {
+  places: SearchResult[];
+  nextPageToken?: string;
+};
