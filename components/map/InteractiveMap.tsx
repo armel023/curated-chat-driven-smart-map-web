@@ -90,6 +90,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             ? `${places[0].name} - ${places[0].primaryCategory || "Unknown"}`
             : "No location data"
         }
+        places={places}
       />
       {/* Legend */}
       <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">

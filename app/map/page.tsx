@@ -1,5 +1,6 @@
 "use client";
 import { LogoWithText } from "@/components/Logo";
+import LogoImg from "@/components/LogoImg";
 import { ChatInterface } from "@/components/map/ChatInterface";
 import { InteractiveMap } from "@/components/map/InteractiveMap";
 import { Button } from "@/components/ui/button";
@@ -69,14 +70,14 @@ export default function MapPage() {
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="border-b bg-card shadow-sm z-10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <LogoWithText />
+      <header className="border-b bg-card shadow-sm z-10 bg-primary rounded">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between ">
+          <LogoImg />
 
           <div className="flex items-center gap-3">
             {isGuest ? (
               <>
-                <span className="text-sm text-muted-foreground hidden sm:inline">
+                <span className="text-sm  hidden sm:inline">
                   Browsing as Guest
                 </span>
                 <Button size="sm" onClick={() => redirect("/login")}>
