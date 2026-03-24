@@ -133,7 +133,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     {message.places.map((place) => (
                       <div
                         key={place.id}
-                        ref={(el) => (placeRefs.current[place.id] = el)}
+                        // ref={(el) => (placeRefs.current[place.id] = el)}
                       >
                         <PlaceCard
                           place={place}

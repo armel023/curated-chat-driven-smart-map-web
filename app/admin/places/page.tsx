@@ -16,7 +16,7 @@ export default function AdminPlacesPage() {
 
   const filteredPlaces = approvedPlaces.filter(place =>
     place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    place.neighborhood.toLowerCase().includes(searchTerm.toLowerCase())
+    place.neighborhood?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

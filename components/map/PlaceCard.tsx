@@ -1,9 +1,9 @@
 import React from 'react';
-import { Place } from '../../contexts/PlacesContext';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { MapPin, Clock, ExternalLink, Star } from 'lucide-react';
+import { Place } from '@/types';
 
 interface PlaceCardProps {
   place: Place;
@@ -18,7 +18,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, isSelected, onClick
     const today = dayNames[now.getDay()];
     const currentTime = now.getHours() * 60 + now.getMinutes();
 
-    const todayHours = place.openingHours[today];
+    const todayHours = place.openingHours?.[today];
     if (!todayHours) return false;
 
     const [openHour, openMin] = todayHours.open.split(':').map(Number);
@@ -70,21 +70,25 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, isSelected, onClick
 
           <div className="flex flex-wrap gap-1.5">
             <Badge variant="default" className="text-xs">
-              {place.category}
+              {place.primaryCategory || 'Uncategorized'}
             </Badge>
-            {place.subCategory && (
+            {place.subCategories && place.subCategories.length > 0 && (
               <Badge variant="outline" className="text-xs">
-                {place.subCategory}
+                {place.subCategories[0]}
               </Badge>
             )}
-            <Badge variant="secondary" className="text-xs">
-              {place.neighborhood}
-            </Badge>
-            {place.tags.slice(0, 2).map((tag) => (
-              <Badge key={tag} variant="outline" className="text-xs">
-                {tag}
+            {place.neighborhood && (
+              <Badge variant="secondary" className="text-xs">
+                {place.neighborhood}
               </Badge>
-            ))}
+            )}
+            {place.tags && place.tags.length > 0 && (
+              place.tags.slice(0, 2).map((tag) => (
+                <Badge key={tag} variant="outline" className="text-xs">
+                  {tag}
+                </Badge>
+              ))
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-2 border-t">
