@@ -37,6 +37,26 @@ export type Place = {
   reviewCount?: number;
 };
 
+export type PrimaryCategory = {
+  id: string;
+  name: string;
+}
+
+export type SubCategory = {
+  id: string;
+  name: string;
+}
+
+export type Neighborhood = {
+  id: string;
+  name: string;
+}
+
+export type Tag = {
+  id: string;
+  name: string;
+}
+
 export type SearchResult = {
   id: string;
   name: string;

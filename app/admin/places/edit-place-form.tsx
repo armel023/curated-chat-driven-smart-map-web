@@ -16,62 +16,62 @@ interface EditPlaceFormProps {
   place: Place;
 }
 
-const CATEGORIES = ['EAT', 'DRINK','DO' ,'SHOP', 'NEED'];
-const SUB_CATEGORIES = [
-// EAT
-    "Restaurant",
-    "Cafe",
-    "Street Food",
-    "Quick Bites",
-    "Bakery",
-    "Ice Cream",
+// const CATEGORIES = ['EAT', 'DRINK','DO' ,'SHOP', 'NEED'];
+// const SUB_CATEGORIES = [
+// // EAT
+//     "Restaurant",
+//     "Cafe",
+//     "Street Food",
+//     "Quick Bites",
+//     "Bakery",
+//     "Ice Cream",
 
-    // DRINK
-    "Coffee",
-    "Tea",
-    "Wine",
-    "Cocktails & Drinks",
-    "Beer",
-    "Rooftop",
+//     // DRINK
+//     "Coffee",
+//     "Tea",
+//     "Wine",
+//     "Cocktails & Drinks",
+//     "Beer",
+//     "Rooftop",
 
-    // DO
-    "Sights",
-    "Museum & Gallery",
-    "Nature & Parks",
-    "Swim & Beach",
-    "Viewpoint",
-    "Entertainment",
-    "Event Venue",
+//     // DO
+//     "Sights",
+//     "Museum & Gallery",
+//     "Nature & Parks",
+//     "Swim & Beach",
+//     "Viewpoint",
+//     "Entertainment",
+//     "Event Venue",
 
-    // SHOP
-    "Fashion",
-    "Lifestyle",
-    "Bookstore",
-    "Design",
-    "Vintage",
-    "Market",
-    "Food Souvenirs",
+//     // SHOP
+//     "Fashion",
+//     "Lifestyle",
+//     "Bookstore",
+//     "Design",
+//     "Vintage",
+//     "Market",
+//     "Food Souvenirs",
 
-    // NEED
-    "Toilets",
-    "Pharmacy",
-    "ATM",
-    "Playground",
-    "WiFi",
-    "Workspace",
-    "Transport"
-];
-const NEIGHBORHOODS = ['Indre By', 'Nørrebro', 'Vesterbro', 'Østerbro', 'Christianshavn', 'Refshaleøen', 'Islands Brygge', 'Embarcadero'];
-const COMMON_TAGS = [
-  "Canal View",
-  "Lake View",
-  "Nyhavn View",
-  "Seaside View",
-  "Mountain View",
-  "City View",];
+//     // NEED
+//     "Toilets",
+//     "Pharmacy",
+//     "ATM",
+//     "Playground",
+//     "WiFi",
+//     "Workspace",
+//     "Transport"
+// ];
+// const NEIGHBORHOODS = ['Indre By', 'Nørrebro', 'Vesterbro', 'Østerbro', 'Christianshavn', 'Refshaleøen', 'Islands Brygge', 'Embarcadero'];
+// const COMMON_TAGS = [
+//   "Canal View",
+//   "Lake View",
+//   "Nyhavn View",
+//   "Seaside View",
+//   "Mountain View",
+//   "City View",];
 
 export default function EditPlaceForm({ place }: EditPlaceFormProps) {
-  const { updatePlace } = usePlaces();
+  const { updatePlace, primaryCategories, subCategories, neighborhoods, tags } = usePlaces();
   const [formData, setFormData] = useState(place);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -141,8 +141,8 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {CATEGORIES.map((cat) => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+              {primaryCategories.map((cat) => (
+                <SelectItem key={cat.name} value={cat.name}>{cat.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -158,8 +158,8 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {NEIGHBORHOODS.map((hood) => (
-                <SelectItem key={hood} value={hood}>{hood}</SelectItem>
+              {neighborhoods.map((hood) => (
+                <SelectItem key={hood.name} value={hood.name}>{hood.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -169,14 +169,14 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
       <div className="space-y-2">
         <Label htmlFor="subCategory">Sub Category</Label>
         <div className="flex flex-wrap gap-2">
-          {SUB_CATEGORIES && SUB_CATEGORIES.map((subCat) => (
+          {subCategories && subCategories.map((subCat) => (
             <Badge
-              key={subCat}
-              variant={formData.subCategories?.includes(subCat) ? 'default' : 'outline'}
+              key={subCat.name}
+              variant={formData.subCategories?.includes(subCat.name) ? 'default' : 'outline'}
               className="cursor-pointer"
-              onClick={() => toggleSubCategory(subCat)}
+              onClick={() => toggleSubCategory(subCat.name)}
             >
-              {subCat}
+              {subCat.name}
             </Badge>
           ))}
         </div>
@@ -199,14 +199,14 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
       <div className="space-y-2">
         <Label>Tags</Label>
         <div className="flex flex-wrap gap-2">
-          {COMMON_TAGS && COMMON_TAGS.map((tag) => (
+          {tags && tags.map((tag) => (
             <Badge
-              key={tag}
-              variant={formData.tags?.includes(tag) ? 'default' : 'outline'}
+              key={tag.name}
+              variant={formData.tags?.includes(tag.name) ? 'default' : 'outline'}
               className="cursor-pointer"
-              onClick={() => toggleTag(tag)}
+              onClick={() => toggleTag(tag.name)}
             >
-              {tag}
+              {tag.name}
             </Badge>
           ))}
         </div>

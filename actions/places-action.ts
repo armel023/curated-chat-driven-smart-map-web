@@ -28,3 +28,19 @@ export async function updatePlaceStatus(id: string, status: PlaceStatus): Promis
   }
   console.log(`Place ${id} status updated to ${status}`);
 }
+
+export async function updatePlaceData(id: string, data: Partial<Place>): Promise<void> {
+  console.log(`Updating place ${id} with data:`, data);
+  const res = await fetch(`${SERVER_URL}/api/Place/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) {
+    throw new Error("Failed to update place data");
+  }
+  console.log(`Place ${id} data updated`, data);
+}
+
