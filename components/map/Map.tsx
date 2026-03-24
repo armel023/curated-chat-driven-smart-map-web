@@ -26,36 +26,27 @@ const defaults = {
   maxZoom: 19,
 };
 
-export default function Map({
-  zoom = defaults.zoom,
-  places = [],
-}: MapProps) {
-
+export default function Map({ zoom = defaults.zoom, places = [] }: MapProps) {
   function FitBounds({ places }: { places: Place[] }) {
-  const map = useMap();
+    const map = useMap();
 
-  useEffect(() => {
-    if (!places || places.length === 0) return;
+    useEffect(() => {
+      if (!places || places.length === 0) return;
 
-    const bounds = places.map((place) => [
-      place.latitude,
-      place.longitude,
-    ]) as LatLngTuple[];
+      const bounds = places.map((place) => [
+        place.latitude,
+        place.longitude,
+      ]) as LatLngTuple[];
 
-  if (places.length === 1) {
-    map.setView(
-        [places[0].latitude, places[0].longitude],
-        15
-      );
-  } else {
-    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 17, });
+      if (places.length === 1) {
+        map.setView([places[0].latitude, places[0].longitude], 15);
+      } else {
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 17 });
+      }
+    }, [places, map]);
+
+    return null;
   }
-    
-  }, [places, map]);
-
-  return null;
-}
-
 
   return (
     <MapContainer
@@ -64,7 +55,7 @@ export default function Map({
       }
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", zIndex: 0 }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -72,18 +63,11 @@ export default function Map({
       />
       {places.map((place) => (
         <Marker key={place.id} position={[place.latitude, place.longitude]}>
-          {/* <Popup>
-            <div>
-              <h3 className="font-bold">{place.name}</h3>
-              <p>{place.primaryCategory}</p>
-            </div>
-          </Popup> */}
           <Tooltip permanent direction="top" offset={[0, -10]}>
             {place.name || "Unnamed location"}
           </Tooltip>
         </Marker>
       ))}
-      {/* <ChangeView center={posix as LatLngTuple} /> */}
       <FitBounds places={places} />
     </MapContainer>
   );

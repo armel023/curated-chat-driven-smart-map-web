@@ -3,26 +3,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import { logOutAction } from "@/actions/login-action";
+import LogoImg from "@/components/LogoImg";
+import { useSession } from "next-auth/react";
 
 export default function AdminHeader() {
-  
+  const { update } = useSession();
   const handleLogout = async () => {
     await logOutAction();
+    await update();
   };
   return (
     <div className=" px-4 h-16 flex items-center justify-between bg-primary">
-      <div className="flex justify-center bg-primary p-4 rounded">
-        <Image
-          src={
-            "https://lirp.cdn-website.com/d0f7b8b4/dms3rep/multi/opt/Kopi+af+Kopi+af+Kopi+af+Kopi+af+Kopi+af+Kopi+af+paint+%282500+x+1080+px%29+%282500+x+2000+px%29+%282500+x+800+px%29+%282500+x+300+px%29+%282000+x+300+px%29+%282%29-1920w.png"
-          }
-          alt={"logo"}
-          width={150}
-          height={22}
-        />
-      </div>
+      <LogoImg />
 
       <div className="flex items-center gap-4">
         <span className="text-sm text-muted-foreground">

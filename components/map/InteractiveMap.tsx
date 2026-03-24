@@ -81,11 +81,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       ref={mapRef}
       className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-lg overflow-hidden relative"
     >
-      <MapComponent
-        places={places}
-      />
+      <MapComponent places={places} />
       {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+      <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border z-50">
         <div className="text-xs font-medium mb-2">Categories</div>
         <div className="space-y-1 text-xs">
           {["Coffee", "Restaurant", "Bar"].map((cat) => {
@@ -107,7 +105,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       </div>
 
       {/* Map info */}
-      <div className="absolute top-4 right-4 bg-card/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border text-xs">
+      <div className="absolute top-4 right-4 bg-card/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border text-xs, z-50">
         <span className="text-muted-foreground">
           {places.length} places shown
         </span>

@@ -61,9 +61,9 @@ export type SearchPlaceTextQueryResult = {
   nextPageToken?: string;
 };
 
-
 export type UserData = {
   id: string;
   name: string;
+  isAdmin: boolean;
   accessToken: string;
-}
+};

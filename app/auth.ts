@@ -31,13 +31,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               return {
                 id: data.id,
                 name: data.userName,
+                isAdmin: data.isAdmin,
                 accessToken: data.accessToken,
               } as UserData;
             }
           }
           return null;
         } catch (error) {
-        //   console.error("Error during authentication:", error);
+          //   console.error("Error during authentication:", error);
           return null;
         }
       },
@@ -51,12 +52,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.accessToken = (user as UserData).accessToken;
         token.name = user.name;
+        token.isAdmin = (user as UserData).isAdmin;
       }
       return token;
     },
     async session({ session, token }) {
       session.sessionToken = token.accessToken as string;
       session.user.name = token.name;
+      session.user.isAdmin = token.isAdmin as boolean;
       return session;
     },
   },

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useState } from "react";
@@ -25,25 +26,24 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    try {
-      const success = await loginAction(email, password);
-      if (success) {
-        toast.success("Login successful!");
-        // Navigate based on role
-        if (email === "admin@example.com") {
-          redirect("/admin");
-        } else {
-          redirect("/map");
-        }
+    const success = await loginAction(email, password);
+    console.log("Login action result:", success);
+    if (success) {
+      console.log("Login successful, redirecting...");
+      toast.success("Login successful!");
+      const session = await getSession();
+      console.log("Session after login:", session);
+      if (session?.user?.isAdmin) {
+        console.log("User is admin, redirecting to admin panel...");
+        redirect("/admin/import");
       } else {
-        toast.error("Invalid credentials");
+        console.log("User is not admin, redirecting to map...");
+        redirect("/map");
       }
-    } catch (error) {
-      toast.error("An error occurred during login");
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error("Invalid credentials");
     }
+    setLoading(false);
   };
 
   return (
@@ -95,19 +95,22 @@ export default function LoginPage() {
 
             <div className="text-sm text-center text-muted-foreground mt-2">
               Or continue as{" "}
-              <Link href="/map" className="text-primary hover:underline">
+              <button
+                onClick={() => (window.location.href = "/map")}
+                className="text-primary hover:underline"
+              >
                 Guest
-              </Link>
+              </button>
             </div>
           </form>
 
           <div className="mt-6 p-4 bg-secondary rounded-lg text-sm">
             <p className="font-medium mb-2">Demo Credentials:</p>
             <p className="text-muted-foreground">
-              Admin: username: admin / password: Admin@123
+              Admin: admin@example.com / password: Admin123!
             </p>
             <p className="text-muted-foreground">
-              User: any email / any password
+              User: user@example.com / password: User123!
             </p>
           </div>
         </CardContent>

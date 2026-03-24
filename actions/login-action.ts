@@ -24,5 +24,5 @@ export default async function loginAction(email: string, password: string) {
 }
 
 export async function logOutAction() {
-  await signOut({ redirectTo: "/login" });
+  await signOut({ redirect: true, redirectTo: "/login" });
 }

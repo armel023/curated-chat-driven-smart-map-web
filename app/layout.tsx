@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ZitronenFalter Smart Map",
+  title: "Go Like a Local",
   description: "Curated Chat-Driven Smart Map",
 };
 
@@ -31,10 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-            {children}
-            <Toaster />
+          {children}
+          <Toaster />
         </AuthProvider>
-        
       </body>
     </html>
   );
