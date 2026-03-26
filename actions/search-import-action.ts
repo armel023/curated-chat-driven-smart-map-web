@@ -9,7 +9,7 @@ export async function searchPlaceNearbyToImport(
 ): Promise<SearchResult[]> {
   const body = {
     includedTypes: [query],
-    maxResultCount: 5,
+    maxResultCount: 6,
     locationRestriction: {
       circle: {
         center: {
@@ -41,7 +41,7 @@ export async function searchPlaceTextQuery(
 ): Promise<SearchPlaceTextQueryResult> {
   const body = {
     textQuery: query,
-    pageSize: 5,
+    pageSize: 6,
     pageToken: pageToken,
   };
   const res = await fetch(`${SERVER_URL}/api/ImportPlace/search-text`, {

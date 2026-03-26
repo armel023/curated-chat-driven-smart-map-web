@@ -26,9 +26,9 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const success = await loginAction(email, password);
-    console.log("Login action result:", success);
-    if (success) {
+    const result = await loginAction(email, password);
+    console.log("Login action result:", result);
+    if (result.success) {
       console.log("Login successful, redirecting...");
       toast.success("Login successful!");
       const session = await getSession();
@@ -41,7 +41,7 @@ export default function LoginPage() {
         redirect("/map");
       }
     } else {
-      toast.error("Invalid credentials");
+      toast.error(result.error || "Invalid email or password");
     }
     setLoading(false);
   };

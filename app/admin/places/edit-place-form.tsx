@@ -79,7 +79,7 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
     updatePlace(place.id, formData);
     toast.success('Place updated successfully');
   };
-
+  
   const toggleTag = (tag: string) => {
     setFormData(prev => ({
       ...prev,
@@ -159,7 +159,7 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
             </SelectTrigger>
             <SelectContent>
               {neighborhoods.map((hood) => (
-                <SelectItem key={hood.name} value={hood.name}>{hood.name}</SelectItem>
+                <SelectItem key={hood.id} value={hood.name}>{hood.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -225,10 +225,10 @@ export default function EditPlaceForm({ place }: EditPlaceFormProps) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="aiSummary">AI-Generated USP Summary</Label>
-          <Button type="button" variant="outline" size="sm" onClick={generateAISummary}>
+          {/* <Button type="button" variant="outline" size="sm" onClick={generateAISummary}>
             <RefreshCw className="w-3 h-3 mr-2" />
             Regenerate
-          </Button>
+          </Button> */}
         </div>
         <Textarea
           id="aiSummary"

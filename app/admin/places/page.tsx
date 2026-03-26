@@ -1,5 +1,5 @@
 "use client";
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { usePlaces } from '../../../contexts/PlacesContext';
 import { Card, CardContent} from '../../../components/ui/card';
 import { Input } from '../../../components/ui/input';
@@ -9,7 +9,7 @@ import PlaceCard from './place-card';
 
 
 export default function AdminPlacesPage() {
-  const { places, getApprovedPlaces} = usePlaces();
+  const {reloadPlaces, getApprovedPlaces} = usePlaces();
   const approvedPlaces = getApprovedPlaces();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
@@ -18,6 +18,12 @@ export default function AdminPlacesPage() {
     place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     place.neighborhood?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    // Initial load of places
+    reloadPlaces();
+   
+  }, []);
 
   return (
     <div className="space-y-6">

@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogHeader} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogHeader, DialogClose} from '@/components/ui/dialog'
 import { Place } from '@/types'
 import { Edit2, Eye, EyeOff } from 'lucide-react'
 import EditPlaceForm from './edit-place-form'
@@ -42,7 +42,9 @@ export default function PlaceCard( { place, selectedPlaceId, onEdit }: { place: 
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Edit Place</DialogTitle>
-              </DialogHeader>
+              </DialogHeader>         
+              <DialogClose>
+              </DialogClose>
               {selectedPlaceId === place.id && <EditPlaceForm place={place} />}
             </DialogContent>
           </Dialog>

@@ -25,8 +25,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               password: credentials?.password,
             }),
           });
+          console.log("Authentication response status:", res.status);
           if (res.status === 200) {
             const data = await res.json();
+            console.log("Authentication response data:", data);
             if (data?.accessToken) {
               return {
                 id: data.id,
@@ -38,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
           return null;
         } catch (error) {
-          //   console.error("Error during authentication:", error);
+          console.error("Error during authentication:", error);
           return null;
         }
       },
